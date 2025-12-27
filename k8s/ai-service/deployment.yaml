@@ -21,6 +21,8 @@ spec:
       labels:
         app: pfe-ai-service
     spec:
+      imagePullSecrets:
+        - name: ghcr-secret
       containers:
         - name: ai-service
           image: ghcr.io/kannou1/pfe-ai-service:latest
@@ -39,7 +41,6 @@ spec:
   selector:
     app: pfe-ai-service
   ports:
-    - name: http
-      port: 6000
+    - port: 6000
       targetPort: 6000
   type: ClusterIP

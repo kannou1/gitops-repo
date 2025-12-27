@@ -1,15 +1,9 @@
 apiVersion: v1
-kind: Namespace
-metadata:
-  name: pfe
----
-apiVersion: v1
 kind: ConfigMap
 metadata:
   name: pfe-frontend-config
   namespace: pfe
 data:
-  # In-cluster backend URL (Service DNS)
   REACT_APP_API_URL: "http://pfe-backend:5000"
 ---
 apiVersion: apps/v1
@@ -27,6 +21,8 @@ spec:
       labels:
         app: pfe-frontend
     spec:
+      imagePullSecrets:
+        - name: ghcr-secret
       containers:
         - name: frontend
           image: ghcr.io/kannou1/pfe-frontend:latest
@@ -45,7 +41,6 @@ spec:
   selector:
     app: pfe-frontend
   ports:
-    - name: http
-      port: 80
+    - port: 80
       targetPort: 80
   type: ClusterIP

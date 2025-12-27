@@ -5,8 +5,7 @@ metadata:
   namespace: pfe
 data:
   PORT: "5000"
-  MONGO_URI: "mongodb+srv://kannou:kannou@pfe.mthhapn.mongodb.net/"
-  AI_SERVICE_URL: "http://pfe-ai-service:6000"
+  AI_SERVICE_URL: "http://pfe-ai-service:7000"
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -23,6 +22,8 @@ spec:
       labels:
         app: pfe-backend
     spec:
+      imagePullSecrets:
+        - name: ghcr-secret
       containers:
         - name: backend
           image: ghcr.io/kannou1/pfe-backend:latest
@@ -41,8 +42,6 @@ spec:
   selector:
     app: pfe-backend
   ports:
-    - name: http
-      port: 5000
+    - port: 5000
       targetPort: 5000
   type: ClusterIP
-
